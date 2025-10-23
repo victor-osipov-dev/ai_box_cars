@@ -3,38 +3,79 @@
         <div class="header">
             <h1 class="title">Картинки</h1>
 
-            <input ref="files_input" type="file" multiple placeholder="Files" name="files" />
+            <input @change="selectFiles" ref="files_input" type="file" multiple placeholder="Files" name="files" />
 
             <button type="submit">Отправить</button>
         </div>
 
+        <details v-if="fake_data">
+            <summary>Прикреплённые файлы</summary>
+            <div class="fake_imgs">
+                <img class="img_fake" v-for="img in files_list" :src="img"/>
+            </div>
+        </details>
+
         <div class="list">
-            <img class="img" v-for="img in images" :key="img.id" :src="img.url" />
+            <img class="img_fake" v-for="img in images" :key="img.id" :src="img.url" />
+            <img v-if="submit_fake_data" class="img_fake" v-for="img in files_list_result" :src="img"/>
         </div>
     </form>
 </template>
 
 <script setup lang="ts">
-import { ref, useTemplateRef } from "vue";
+import { onMounted, ref, useTemplateRef } from "vue";
 
 // fetch('')
 
+const files_list = ['1.jpg', '3.jpg', '4.jpg']
+const files_list_result = ['11.jpg', '33.jpg', '44.jpg']
+
 const images = ref<{ id: number, url: string }[]>([])
+const files_input = useTemplateRef("files_input");
+const fake_data = ref(true)
+const submit_fake_data = ref(false)
+// const selectedFiles = ref()
+
+function selectFiles() {
+    console.log(123);
+    
+    fake_data.value = files_input.value?.files?.length == 0 ? true : false
+}
+// function createFileList(filesArray) {
+//     const dataTransfer = new DataTransfer();
+    
+//     filesArray.forEach(file => {
+//         dataTransfer.items.add(file);
+//     });
+    
+//     return dataTransfer.files; // FileList
+// }
+
+// const imageUrl = await import('src/assets/images/1.jpg');
+
+// console.log(imageUrl);
+
 
 // const img_el = useTemplateRef<HTMLImageElement>("img_el");
-const files_input = useTemplateRef("files_input");
+
+
+onMounted(() => {
+    // const file_list = createFileList([imageUrl])
+    // files_input.value!.files = file_list
+})
 
 async function sendFiles() {
+    
     const formData = new FormData();
-
+    
     const files = files_input.value?.files;
 
-    if (files) {
+    if (files?.length !== 0) {
         [...files].forEach((file: Blob) => {
             formData.append("files", file);
         });
 
-        const response = await fetch("http://127.0.0.1:8080/echo-image", {
+        const response = await fetch("http://147.45.107.168:8080/echo-image", {
             method: "POST",
             body: formData,
         });
@@ -50,11 +91,59 @@ async function sendFiles() {
         }))
 
         // console.log(response);
+    } else {
+        submit_fake_data.value = true
+
     }
 }
 </script>
 
 <style scoped>
+details {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0;
+    margin: 10px 0;
+    background: #fafafa;
+    transition: all 0.3s ease;
+}
+
+details[open] {
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+summary {
+    padding: 12px 16px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #333;
+    list-style: none;
+    position: relative;
+    user-select: none;
+}
+
+/* Убираем стандартный маркер */
+summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Кастомный маркер */
+summary::after {
+    content: '▶';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%) rotate(0deg);
+    transition: transform 0.3s ease;
+    color: #666;
+}
+
+details[open] summary::after {
+    transform: translateY(-50%) rotate(90deg);
+}
+
+
 .form {
     display: grid;
     gap: 1rem;
@@ -80,6 +169,17 @@ async function sendFiles() {
     border-radius: 5px;
 }
 
+.img_fake {
+    width: 400px;
+    height: 200px;
+
+}
+.fake_imgs {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem;
+    gap: 1rem;
+}
 .title {
     /* color: #548bba; */
 }
