@@ -8,8 +8,9 @@
 body {
     padding: 1rem;
     margin: 0.5rem;
-    border: 1px dashed black;
+    /* border: 1px dashed black; */
     min-height: calc(100dvh - 1rem);
     border-radius: 5px;
     background-color: rgb(52, 52, 52);
+    background: linear-gradient(135deg, #000000, #000000 70%, #8B0000);
 }

@@ -160,8 +160,14 @@ details[open] summary::after {
     display: grid;
     gap: 1rem;
 }
+.title {
+    margin-bottom: 0.5rem;
+    color: white;
+}
 .header {
-    background-color: rgb(235, 183, 71);
+    background-color: rgba(190, 24, 24, 0.775);
+    backdrop-filter: blur(10px);
+    color: white;
     padding: 1rem;
     border-radius: 5px;
     
@@ -188,6 +194,7 @@ details[open] summary::after {
     width: 100%;
     height: 200px;
     object-fit: cover;
+    border-radius: 5px;
 }
 .fake_imgs {
     display: flex;
@@ -195,10 +202,7 @@ details[open] summary::after {
     padding: 1rem;
     gap: 1rem;
 }
-.title {
-    /* color: #548bba; */
-    margin-bottom: 0.5rem;
-}
+
 /* Стили для кнопки */
 .button {
     /* margin-top: 1rem; */
