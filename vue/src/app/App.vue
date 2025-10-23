@@ -1,9 +1,16 @@
 <template>
-    <form @submit.prevent="sendFiles" action="#">
-        <h1>images:</h1>
-        <input ref="files_input" type="file" multiple placeholder="Files" name="files" />
-        <button type="submit">Submit</button>
-        <img v-for="img in images" :key="img.id" :src="img.url"/>
+    <form class="form" @submit.prevent="sendFiles" action="#">
+        <div class="header">
+            <h1>Картинки</h1>
+
+            <input ref="files_input" type="file" multiple placeholder="Files" name="files" />
+
+            <button type="submit">Отправить</button>
+        </div>
+
+        <div class="list">
+            <img class="img" v-for="img in images" :key="img.id" :src="img.url" />
+        </div>
     </form>
 </template>
 
@@ -12,7 +19,7 @@ import { ref, useTemplateRef } from "vue";
 
 // fetch('')
 
-const images = ref<{id: number, url: string}[]>([])
+const images = ref<{ id: number, url: string }[]>([])
 
 // const img_el = useTemplateRef<HTMLImageElement>("img_el");
 const files_input = useTemplateRef("files_input");
@@ -26,14 +33,14 @@ async function sendFiles() {
         [...files].forEach((file: Blob) => {
             formData.append("files", file);
         });
-        
-        const response = await fetch("http://127.0.0.1:8000/echo-image", {
+
+        const response = await fetch("http://127.0.0.1:8080/echo-image", {
             method: "POST",
             body: formData,
         });
         const form_data = await response.formData();
         const form_data_files = form_data.getAll('image') as File[]
-        
+
         // const url_data = URL.createObjectURL(form_data.get('image') as Blob);
         // img_el.value!.src = url_data;
 
@@ -47,4 +54,91 @@ async function sendFiles() {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.form {
+    display: grid;
+    gap: 1rem;
+}
+.header {
+    background-color: rgb(235, 183, 71);
+    padding: 1rem;
+    border-radius: 5px;
+}
+.list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    gap: 1rem;
+}
+
+.img {
+    min-width: 0;
+    min-height: 0;
+    width: 100%;
+    object-fit: cover;
+    height: 200px;
+    border-radius: 5px;
+}
+
+
+/* Стили для кнопки */
+button[type="submit"] {
+    padding: 12px 24px;
+    background: #228be6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    align-self: flex-start;
+}
+
+button[type="submit"]:hover {
+    background: #1c7ed6;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(34, 139, 230, 0.3);
+}
+
+button[type="submit"]:active {
+    transform: translateY(0);
+}
+
+button[type="submit"]:disabled {
+    background: #adb5bd;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* Альтернативный стиль для input файлов */
+.file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.file-input-wrapper input[type=file] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.custom-file-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background: #495057;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.custom-file-button:hover {
+    background: #343a40;
+}
+</style>

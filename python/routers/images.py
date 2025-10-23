@@ -9,7 +9,7 @@ from typing import List
 import aiohttp
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
-model = YOLO('yolo11m.pt')
+model = YOLO('best.pt')
 router = APIRouter(prefix="")
 
 def imgToByteImg(img):
@@ -60,7 +60,7 @@ async def echo_image(files: List[UploadFile] = File(...)):
         image = Image.open(io.BytesIO(content))
         images.append(image)
 
-    results = model.predict(images, stream=False)
+    results = model.predict(images, stream=False, classes=[9, 10])
 
     print(results)
 
