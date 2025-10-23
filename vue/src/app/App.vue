@@ -5,7 +5,7 @@
 
             <input @change="selectFiles" ref="files_input" type="file" multiple placeholder="Files" name="files" />
 
-            <button type="submit">Отправить</button>
+            <button class="button" type="submit">Отправить</button>
         </div>
 
         <details v-if="fake_data">
@@ -170,7 +170,9 @@ details[open] summary::after {
 }
 
 .img_fake {
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
+    width: 100%;
     height: 200px;
 
 }
@@ -182,9 +184,13 @@ details[open] summary::after {
 }
 .title {
     /* color: #548bba; */
+    /* margin-bottom: 0.5rem; */
 }
 /* Стили для кнопки */
-button[type="submit"] {
+.button {
+    margin-top: 1rem;
+}
+.button[type="submit"] {
     padding: 12px 24px;
     background: #228be6;
     color: white;
@@ -197,17 +203,17 @@ button[type="submit"] {
     align-self: flex-start;
 }
 
-button[type="submit"]:hover {
+.button[type="submit"]:hover {
     background: #1c7ed6;
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(34, 139, 230, 0.3);
 }
 
-button[type="submit"]:active {
+.button[type="submit"]:active {
     transform: translateY(0);
 }
 
-button[type="submit"]:disabled {
+.button[type="submit"]:disabled {
     background: #adb5bd;
     cursor: not-allowed;
     transform: none;
