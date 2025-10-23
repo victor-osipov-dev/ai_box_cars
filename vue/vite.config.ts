@@ -5,6 +5,6 @@ import vue from "@vitejs/plugin-vue";
 export default defineConfig({
     plugins: [vue()],
     server: {
-	allowedHosts: ["ai-box-cars.ru"]
-    }
+        allowedHosts: ["ai-box-cars.ru"],
+    },
 });
