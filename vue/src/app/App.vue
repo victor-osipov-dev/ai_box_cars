@@ -34,7 +34,7 @@ async function sendFiles() {
             formData.append("files", file);
         });
 
-        const response = await fetch("http://127.0.0.1:8080/echo-image", {
+        const response = await fetch("http://147.45.107.168:8080/echo-image", {
             method: "POST",
             body: formData,
         });
