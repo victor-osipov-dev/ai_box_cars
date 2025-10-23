@@ -1,7 +1,7 @@
 <template>
     <form class="form" @submit.prevent="sendFiles" action="#">
         <div class="header">
-            <h1>Картинки</h1>
+            <h1 class="title">Картинки</h1>
 
             <input ref="files_input" type="file" multiple placeholder="Files" name="files" />
 
@@ -80,7 +80,9 @@ async function sendFiles() {
     border-radius: 5px;
 }
 
-
+.title {
+    /* color: #548bba; */
+}
 /* Стили для кнопки */
 button[type="submit"] {
     padding: 12px 24px;

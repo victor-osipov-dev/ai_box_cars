@@ -6,8 +6,6 @@ from fastapi.responses import FileResponse, Response
 from ultralytics import YOLO
 from PIL import Image
 from typing import List
-import aiohttp
-from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 model = YOLO('best.pt')
 router = APIRouter(prefix="")
@@ -60,7 +58,7 @@ async def echo_image(files: List[UploadFile] = File(...)):
         image = Image.open(io.BytesIO(content))
         images.append(image)
 
-    results = model.predict(images, stream=False, classes=[9, 10])
+    results = model.predict(images, stream=False)
 
     print(results)
 
